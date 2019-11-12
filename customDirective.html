@@ -1,0 +1,36 @@
+<md-dialog aria-label="Form">
+    <form ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>You can change quantity and price here.</h2>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <div ng-cloak class="md-dialog-content">
+                <md-content layout-gt-sm="row" layout-padding>
+                    <div>
+                        <md-input-container>
+                            <label>Qty</label>
+                            <input ng-model="qty" placeholder="{{qty}}">
+                        </md-input-container>
+                
+                        <md-input-container>
+                            <label>Price</label>
+                            <input ng-model="price" placeholder="{{price}}">
+                        </md-input-container>
+                    </div>
+                </md-content>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <md-button ng-click="answer('Cancel')">
+                Cancel
+            </md-button>
+            <md-button ng-click="updateData(id, name, qty, price, 'applied')">
+                Ok
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
