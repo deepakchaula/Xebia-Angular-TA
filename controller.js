@@ -1,5 +1,6 @@
 demoApp.controller('SimpleController', function ($scope, $mdDialog, $http, SimpleFactory) {
 
+  var scopeGlobal = $scope;
   //pagination variables.
   $scope.customers = [];
   $scope.filteredCustomers = [];
@@ -43,6 +44,14 @@ demoApp.controller('SimpleController', function ($scope, $mdDialog, $http, Simpl
     $scope.hide = function () {
         $mdDialog.hide();
     };
+    $scope.$watch('qty', function() {
+      $scope.qty = $scope.qty.replace(/[^0-9]/g, '');
+      if(!$scope.qty){ $scope.qty = 0};
+    });
+    $scope.$watch('price', function() {
+      $scope.price = $scope.price.replace(/[^\d.]/g,'');
+      if(!$scope.price){ $scope.price = 0};
+    });
 
     $scope.cancel = function () {
         $mdDialog.cancel();
@@ -52,8 +61,13 @@ demoApp.controller('SimpleController', function ($scope, $mdDialog, $http, Simpl
       console.log(id, name, qty, price);
       $mdDialog.hide(answer);
       $http.put('http://localhost:3000/customers/'+id, {name:name, qty: qty, price: price})
-      .then(function (response){
+      .then(function (response) {
+        let data = response.data;
+        let dataGobal = scopeGlobal.customers[(data.id - 1)];
+        dataGobal.qty = data.qty;
+        dataGobal.price = data.price;
         console.log(response);
+        console.log(dataGobal);
       },function (error){
           console.log(error);
       });
@@ -64,9 +78,6 @@ demoApp.controller('SimpleController', function ($scope, $mdDialog, $http, Simpl
         console.log($scope.id, $scope.qty );
     };
   }
-
-
-
 
   setTimeout(function(){
     $scope.$watch('currentPage + numPerPage', updateFilteredItems);
